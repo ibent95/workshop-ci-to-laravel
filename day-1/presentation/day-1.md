@@ -297,9 +297,9 @@ style: |
 
 🏗️ **Arsitektur**
 
-- Opinionated & Terintegrasi
-- Fitur lengkap
-- Ekosistem matang
+- Terstruktur dengan aturan baku
+- Fitur lengkap & terintegrasi
+- Ekosistem matang & luas
 
 🎯 **Dependency Injection**
 
@@ -399,29 +399,54 @@ class UserService
 ---
 
 <!-- _class: content -->
+## PHP Standards Recommendations (PSR)
+
+### Apa itu PSR? 🤔
+
+- Standar penulisan kode PHP yang disepakati komunitas
+- Dibuat oleh PHP-FIG (Framework Interop Group)
+- Digunakan oleh framework modern termasuk Laravel
+
+### PSR yang Sering Digunakan di Laravel
+
+1. **PSR-4: Autoloading**
+   - Struktur folder & namespace yang standar
+   - Contoh: `App\Models\User`
+
+2. **PSR-12: Coding Style**
+   - Aturan penulisan kode
+   - Indentasi, spasi, kurung
+
+3. **PSR-7: HTTP Message**
+   - Standar untuk request/response
+   - Digunakan di API
+
+---
+
+<!-- _class: content -->
 ## Best Practices
 
 ### Struktur Aplikasi
 
-- Gunakan service layer
-- Pisahkan business logic
-- Manfaatkan helpers
+- Gunakan service layer untuk logika bisnis
+- Pisahkan kode berdasarkan fungsi
+- Manfaatkan helpers untuk fungsi umum
 
-### Code Organization
+### Organisasi Kode
 
-- Follow PSR standards
-- Utilize type hinting
-- Document your code
+- Ikuti standar PSR untuk konsistensi
+- Gunakan type hinting untuk keamanan
+- Dokumentasikan kode dengan baik
 
 ---
 
 <!-- _class: lead -->
-## Key Takeaways
+## Poin-Poin Penting
 
-1. Laravel menyediakan struktur yang solid
-2. Blade template sangat powerful
-3. Eloquent mempermudah query database
-4. Environment separation crucial
-5. Clean code is maintainable code
+1. 🏗️ **Struktur Laravel** - Framework dengan aturan baku memudahkan pengembangan tim
+2. 🎨 **Blade Template** - Pembuatan tampilan lebih terstruktur dengan komponen yang bisa digunakan ulang
+3. 💾 **Eloquent ORM** - Pengelolaan database lebih mudah dengan syntax yang intuitif
+4. ⚙️ **Environment** - Pemisahan konfigurasi development dan production sangat penting
+5. 📝 **Standar Kode** - Mengikuti standar penulisan kode memudahkan maintenance jangka panjang
 
 ![bg right:30% 80%](https://laravel.com/img/logomark.min.svg)

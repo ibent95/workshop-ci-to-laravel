@@ -62,18 +62,30 @@ style: |
     background: #2d2d2d;
     border-radius: 8px;
     padding: 1.2em;
-    margin: 1em 0;
+    margin: 1em auto;
+    border-radius: 8px;
     font-size: 0.9em;
-    overflow-x: auto;
+    overflow: auto;
     max-height: 400px;
+    width: 90%;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  /* Inline code */
+  code {
+    background: #2d2d2d;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    color: #e0e0e0;
   }
 
   /* Tables */
   table {
+    width: 90%;
+    margin: 1em auto;
     border-collapse: collapse;
-    margin: 1em 0;
-    width: 100%;
+    background: #2d2d2d;
+    color: #e0e0e0;
   }
 
   th, td {
@@ -82,21 +94,62 @@ style: |
   }
 
   th {
-    background: #2d2d2d;
+    background: #1a1a1a;
     color: #60a5fa;
   }
 
-  /* Inline code */
-  code {
+  td {
     background: #2d2d2d;
-    padding: 0.2em 0.4em;
-    border-radius: 4px;
+  }
+
+  /* Emphasis */
+  strong {
+    color: #60a5fa;
   }
 
   /* Images */
-  img:not([data-marp-twemoji]) {
+  img {
     max-height: 500px;
     object-fit: contain;
+  }
+
+  /* Two Column Layout */
+  section.split {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    padding: 20px 120px;
+  }
+
+  section.split > * {
+    margin: 0;
+  }
+
+  section.split .left,
+  section.split .right {
+    background: rgba(45,45,45,0.5);
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  section.split h3 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #60a5fa;
+  }
+
+  section.split ul {
+    padding-left: 1em;
+  }
+
+  section.split li {
+    margin-bottom: 15px;
+  }
+
+  section.split strong {
+    display: block;
+    color: #60a5fa;
+    margin-bottom: 5px;
   }
 ---
 
