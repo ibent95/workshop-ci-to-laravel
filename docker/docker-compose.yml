@@ -1,0 +1,99 @@
+services:
+  php:
+    platform: linux/amd64
+    build:
+      context: ./php
+    container_name: ${COMPOSE_PROJECT_NAME:-ci2laravel}_php
+    volumes:
+      - ../projects:/var/www/html:cached
+    environment:
+      PHP_IDE_CONFIG: "serverName=app"
+      APP_PRIMARY: ${APP_PRIMARY:-}
+    networks:
+      - app-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  nginx:
+    platform: linux/amd64
+    image: nginx:1.27-alpine
+    container_name: ${COMPOSE_PROJECT_NAME:-ci2laravel}_nginx
+    ports:
+      - "${NGINX_HTTP_PORT:-8080}:80"
+    volumes:
+      - ../projects:/var/www/html:cached
+      - ./nginx:/etc/nginx/conf.d:ro
+    depends_on:
+      - php
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  mysql:
+    platform: linux/amd64
+    image: mysql:${MYSQL_VERSION:-8.0}
+    container_name: ${COMPOSE_PROJECT_NAME:-ci2laravel}_mysql
+    environment:
+      # Root-only mode: hanya set root password. Tidak membuat user terpisah.
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootsecret}
+    command:
+      [
+        "--default-authentication-plugin=mysql_native_password",
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+      ]
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "127.0.0.1",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD:-rootsecret}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  redis:
+    platform: linux/amd64
+    image: redis:7-alpine
+    container_name: ${COMPOSE_PROJECT_NAME:-ci2laravel}_redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    profiles: ["redis"]
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  memcached:
+    platform: linux/amd64
+    image: memcached:1.6-alpine
+    container_name: ${COMPOSE_PROJECT_NAME:-ci2laravel}_memcached
+    command: ["-m", "64"]
+    ports:
+      - "${MEMCACHED_PORT:-11211}:11211"
+    profiles: ["memcached"]
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
