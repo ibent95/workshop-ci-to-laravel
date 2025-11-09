@@ -32,7 +32,15 @@ WORKDIR /var/www/html
 # Opcache recommended settings & general PHP tweaks
 COPY php.ini /usr/local/etc/php/conf.d/custom.ini
 
+# PHP-FPM pool config: change listen from 127.0.0.1 to 0.0.0.0 for Docker network access
+RUN sed -i 's/^listen = 127\.0\.0\.1:9000/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.d/www.conf \
+    && grep "^listen" /usr/local/etc/php-fpm.d/www.conf
+
 # Copy supervisor config
+COPY supervisord.conf /etc/supervisor/supervisord.conf
 COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
+
+# Create supervisor log directory
+RUN mkdir -p /var/log/supervisor
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
