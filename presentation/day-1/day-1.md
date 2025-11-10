@@ -1,47 +1,5 @@
 ---
-marp: true
-theme: default
-class: invert
-paginate: true
-size: 16:9
-style: |
-  /* Base styling untuk slide */
-  section {
-    background-color: #1a1a1a !important;
-    color: #ffffff;
-    display: grid;
-    grid-template-columns: 120px 1fr 120px;  /* Margin kiri & kanan 120px */
-    font-size: 24px;
-    padding: 20px 0;  /* Vertical padding */
-  }
 
-  /* Kontainer utama untuk konten */
-  section > *:not([data-marpit-advanced-background-container]) {
-    grid-column: 2;  /* Menempatkan konten di kolom tengah */
-  }
-
-  /* Background elements tetap full width */
-  section > [data-marpit-advanced-background-container] {
-    grid-column: 1 / -1;  /* Membentang seluruh grid */
-  }
-
-  /* Typography */
-  h1 {
-    font-size: 2.4em;
-    color: #ffffff;
-    margin-bottom: 0.5em;
-  }
-
-  h2 {
-    font-size: 1.9em;
-    color: #60a5fa;
-    margin-bottom: 0.8em;
-    border-bottom: 2px solid #60a5fa;
-    padding-bottom: 0.2em;
-  }
-
-  h3 {
-    font-size: 1.5em;
     color: #60a5fa;
     margin: 0.8em 0 0.4em;
   }
@@ -56,7 +14,6 @@ style: |
     margin: 0.4em 0;
     line-height: 1.4;
   }
-
   /* Code blocks */
   pre {
     background: #2d2d2d;
@@ -255,63 +212,43 @@ style: |
 ## Rangkaian Materi
 
 1. 🏗️ **Struktur & Filosofi Laravel**
-   - MVC Pattern Laravel
-   - Service Container
-   - Dependency Injection
 
-2. 🎨 **Template Engine**
-   - Blade Templating
-   - Layout & Components
-   - Reusable Views
-
-3. 🔗 **Model & Database**
-   - Eloquent ORM
-   - Relationships
-   - Query Builder
+- MVC Pattern Laravel
+- Service Container
+- Dependency Injection
 
 ---
 
-## Perbedaan Filosofi
+<!-- _class: content -->
+## Rangkaian Materi (lanjutan)
 
-### CodeIgniter 4 🔵
+2. 🎨 **Template Engine**
 
-🎯 **Arsitektur**
+- Blade Templating
+- Layout & Components
+- Reusable Views
 
-- Minimalis & Fleksibel
-- Ringan dan cepat
-- Mudah dipelajari
-
-🔧 **Dependency Injection**
-
-- Manual & Eksplisit
-- Kontrol penuh
-- Sederhana
-
-📊 **Database**
-
-- Query Builder
-- Performa tinggi
-- SQL Native support
-
-### Laravel 🟣
-
-🏗️ **Arsitektur**
-
-- Terstruktur dengan aturan baku
-- Fitur lengkap & terintegrasi
-- Ekosistem matang & luas
-
-🎯 **Dependency Injection**
-
-- Service Container
-- Auto-resolution
-- IoC Pattern
-
-💾 **Database**
+3. 🔗 **Model & Database**
 
 - Eloquent ORM
-- Active Record
-- Schema Builder---
+- Relationships
+- Query Builder
+
+---
+
+<!-- _class: content -->
+## Perbedaan Filosofi: CI4 vs Laravel
+
+| Aspek | CodeIgniter 4 | Laravel |
+|-------|---------------|---------|
+| **Arsitektur** | Minimalis & ringan | Terstruktur & lengkap |
+| **DI** | Manual | Service Container |
+| **Database** | Query Builder | Eloquent ORM |
+| **Template** | View sederhana | Blade Engine |
+| **Ekosistem** | Sederhana | Matang & luas |
+| **Learning** | Mudah & cepat | Sedikit kompleks |
+
+---
 
 <!-- _class: content -->
 ## Blade Templating System
@@ -320,13 +257,12 @@ style: |
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1>Welcome, {{ $user->name }}</h1>
-
-        @foreach($posts as $post)
-            @include('components.post-card', ['post' => $post])
-        @endforeach
-    </div>
+  <div class="container">
+    <h1>Welcome, {{ $user->name }}</h1>
+    @foreach($posts as $post)
+      @include('components.post-card', ['post' => $post])
+    @endforeach
+  </div>
 @endsection
 ```
 
@@ -336,21 +272,24 @@ style: |
 ## Eloquent ORM & Relations
 
 ```php
-class User extends Model
-{
-    protected $fillable = ['name', 'email'];
-
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
-    }
+class User extends Model {
+  protected $fillable = ['name', 'email'];
+  public function posts() {
+    return $this->hasMany(Post::class);
+  }
 }
+```
 
-// Query Examples
+---
+
+<!-- _class: content -->
+## Eloquent Query Example
+
+```php
 $users = User::with('posts')
-    ->where('active', true)
-    ->orderBy('created_at', 'desc')
-    ->get();
+  ->where('active', true)
+  ->orderBy('created_at', 'desc')
+  ->get();
 ```
 
 ---
@@ -365,7 +304,14 @@ APP_ENV=local
 APP_DEBUG=true
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
+```
 
+---
+
+<!-- _class: content -->
+## Environment Management (Production)
+
+```env
 # .env.production
 APP_NAME=MyApp
 APP_ENV=production
@@ -380,19 +326,17 @@ DB_HOST=production-db
 ## Service Container & DI
 
 ```php
-class UserService
-{
-    public function __construct(
-        private Repository $repository,
-        private Mailer $mailer
-    ) {}
+class UserService {
+  public function __construct(
+    private Repository $repository,
+    private Mailer $mailer
+  ) {}
 
-    public function register(array $data)
-    {
-        $user = $this->repository->create($data);
-        $this->mailer->sendWelcome($user);
-        return $user;
-    }
+  public function register(array $data) {
+    $user = $this->repository->create($data);
+    $this->mailer->sendWelcome($user);
+    return $user;
+  }
 }
 ```
 
