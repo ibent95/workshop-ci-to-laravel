@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendUserNotificationJob;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -93,11 +94,11 @@ class UserController extends Controller
     {
         $profile = $user->profile;
 
-        SendUserNotification::dispatch(
+        SendUserNotificationJob::dispatch(
             $profile,
             'Test Email',
             'This is a test email to verify the email configuration.'
-        );
+        )->onQueue('low');
 
         return back()->with('success', 'Email uji coba telah dikirim!');
     }
